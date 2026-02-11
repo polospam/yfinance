@@ -8,7 +8,7 @@ app = FastAPI()
 @app.get("/forward-pe/{ticker}")
 def forward_pe(ticker: str):
     try:
-        fpe = get_forward_pe(ticker)
+        fwd_pe = get_forward_pe(ticker)
         price = get_stock_price(ticker)
     except:
         pass
@@ -16,5 +16,5 @@ def forward_pe(ticker: str):
     return {
         "ticker": ticker.upper(),
         "price": price,
-        "forwardPE": fpe
+        "forwardPE": fwd_pe
     }
