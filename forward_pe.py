@@ -12,10 +12,10 @@ def get_multiple_fwd_pes(ticker_symbols: list[str]):
     for ticker in ticker_symbols:
         fwd_pe, price, fwd_eps, trl_eps = get_forward_pe(ticker)
         fwd_pe_data[ticker.upper()] = {
-            "forwardPE": fwd_pe,
             "currentPrice": price,
+            "trailingEPS": trl_eps,
             "forwardEPS": fwd_eps,
-            "trailingEPS": trl_eps
+            "forwardPE": fwd_pe
         }
     return fwd_pe_data
 
