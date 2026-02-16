@@ -6,6 +6,7 @@ app = FastAPI()
 
 @app.get("/fwd-pe/{ticker}")
 def forward_pe(ticker: str):
+    fwd_pe = price = fwd_eps = trl_eps = None
     try:
         fwd_pe, price, fwd_eps, trl_eps = get_forward_pe(ticker)
     except:
