@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from forward_pe import get_forward_pe, get_multiple_fwd_pes
+from api.forward_pe import get_forward_pe, get_multiple_fwd_pes
 
 
 app = FastAPI()
