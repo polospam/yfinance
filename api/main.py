@@ -1,8 +1,17 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from api.forward_pe import get_forward_pe, get_multiple_fwd_pes
 
-
 app = FastAPI()
+
+# Allow CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # change this in production
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/fwd-pe/{ticker}")
 def forward_pe(ticker: str):
@@ -20,7 +29,6 @@ def forward_pe(ticker: str):
         "trailingEPS": trl_eps
     }
 
-# Endpoint for multiple comma-seprated tickers
 @app.get("/fwd-pe/multiple/")
 def forward_pe_multiple(tickers: str):
     ticker_list = tickers.split(",")
