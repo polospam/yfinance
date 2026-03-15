@@ -106,7 +106,7 @@ def interpret_adx(value: float) -> str:
         return "Weak / No Trend ❌"
 
 
-def analyze_momentum(ticker: str, period: str = "2y") -> None:
+def analyze_momentum(ticker: str, period: str = "2y") -> dict:
     print(f"\n{'='*55}")
     print(f"  MOMENTUM ANALYSIS: {ticker.upper()}")
     print(f"{'='*55}")
@@ -116,7 +116,7 @@ def analyze_momentum(ticker: str, period: str = "2y") -> None:
 
     if df.empty:
         print(f"❌ No data found for ticker '{ticker}'. Check the symbol.")
-        return
+        return {}
 
     close: pd.Series = df["Close"]
     high: pd.Series = df["High"]
@@ -237,8 +237,45 @@ def analyze_momentum(ticker: str, period: str = "2y") -> None:
         print("  Verdict: 🟠 MODERATE BEARISH MOMENTUM")
     else:
         print("  Verdict: 🔴 STRONG BEARISH MOMENTUM")
+    if bullish_signals >= 5:
+        verdict = "🟢 STRONG BULLISH MOMENTUM"
+    elif bullish_signals >= 4:
+        verdict = "🟡 MODERATE BULLISH MOMENTUM"
+    elif bullish_signals == 3:
+        verdict = "⚪ MIXED / NEUTRAL MOMENTUM"
+    elif bullish_signals >= 2:
+        verdict = "🟠 MODERATE BEARISH MOMENTUM"
+    else:
+        verdict = "🔴 STRONG BEARISH MOMENTUM"
+    print(f"  Verdict: {verdict}")
 
     print(f"{'='*55}\n")
+
+    return {
+        "ticker": ticker.upper(),
+        "current_price": float(current_price),
+        "pct_change": float(pct_change),
+        "52w_high": float(week52_high),
+        "52w_low": float(week52_low),
+        "pct_from_52w_high": float(pct_from_high),
+        "rsi_14": float(rsi_val),
+        "macd": {"macd": float(macd_val), "signal": float(signal_val), "hist": float(hist_val)},
+        "adx": float(adx_val),
+        "plus_di": float(plus_di_val),
+        "minus_di": float(minus_di_val),
+        "stochastic": {"k": float(k_val), "d": float(d_val)},
+        "roc_10": float(roc_10),
+        "roc_20": float(roc_20),
+        "ma50": float(ma50),
+        "ma200": float(ma200),
+        "ma_signal": ma_signal,
+        "volume_ratio": float(vol_ratio),
+        "volume_signal": vol_signal,
+        "obv_trend": obv_trend,
+        "divergence": divergence,
+        "bullish_signals": int(bullish_signals),
+        "verdict": verdict,
+    }
 
 
 # ── Run it ──────────────────────────────────────────────
