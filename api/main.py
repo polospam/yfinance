@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.forward_pe import get_forward_pe, get_multiple_fwd_pes
-from api.momentum import analyze_momentum
+from api.momentum import analyze_momentum, analyze_multiple_momentum
 
 app = FastAPI()
 
@@ -35,6 +35,14 @@ def forward_pe_multiple(tickers: str):
     ticker_list = tickers.split(",")
     data = get_multiple_fwd_pes(ticker_list)
     return {"tickers": data}
+
+@app.get("/momentum/multiple/")
+def momentum_multiple(tickers: str):
+    ticker_list = [t.strip() for t in tickers.split(",") if t.strip()]
+    if not ticker_list:
+        return {"error": "No valid tickers provided", "tickers": {}}
+    results = analyze_multiple_momentum(ticker_list)
+    return {"tickers": results}
 
 @app.get("/momentum/{ticker}")
 def momentum(ticker: str):
