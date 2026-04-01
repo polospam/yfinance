@@ -278,6 +278,16 @@ def analyze_momentum(ticker: str, period: str = "2y") -> dict:
     }
 
 
+def analyze_multiple_momentum(tickers: list[str], period: str = "2y") -> dict:
+    results = {}
+    for ticker in tickers:
+        ticker = ticker.strip()
+        if not ticker:
+            continue
+        results[ticker.upper()] = analyze_momentum(ticker, period)
+    return results
+
+
 # ── Run it ──────────────────────────────────────────────
 if __name__ == "__main__":
     ticker = input("Enter stock ticker (e.g. AAPL, TSLA, NVDA): ").strip()
