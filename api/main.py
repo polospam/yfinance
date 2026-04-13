@@ -1,3 +1,4 @@
+from datetime import date
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from api.forward_pe import get_forward_pe, get_multiple_fwd_pes
@@ -16,18 +17,16 @@ app.add_middleware(
 
 @app.get("/fwd-pe/{ticker}")
 def forward_pe(ticker: str):
-    fwd_pe = price = fwd_eps = trl_eps = None
-    try:
-        fwd_pe, price, fwd_eps, trl_eps = get_forward_pe(ticker)
-    except:
-        pass
-
+    fwd_pe, price, fwd_eps, trl_eps, div_rate, cy_eps = get_forward_pe(ticker)
     return {
+        "date": date.today().isoformat(),
         "ticker": ticker.upper(),
         "price": price,
         "forwardPE": fwd_pe,
         "forwardEPS": fwd_eps,
-        "trailingEPS": trl_eps
+        "trailingEPS": trl_eps,
+        "dividendRate": div_rate,
+        "currentYearEPS": cy_eps
     }
 
 @app.get("/fwd-pe/multiple/")
